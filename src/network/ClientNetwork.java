@@ -8,13 +8,14 @@ import java.net.*;
 
 public class ClientNetwork implements Runnable {
 	private Inet4Address serverIP;
-	private Socket netSocket;
+	private static Socket netSocket;
 	private int sport;
 	
-	public ClientNetwork(byte[] ip, int port) throws UnknownHostException {
+	public ClientNetwork(byte[] ip, int port, int param) throws IOException {
 		
 		Inet4Address serverIP = (Inet4Address) Inet4Address.getByAddress(ip);
 		int sport = port;
+		
 	}
 	
 	public boolean connect() throws IOException{
@@ -31,14 +32,8 @@ public class ClientNetwork implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			while (connect()){
-				
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		
 		
 	}
 
