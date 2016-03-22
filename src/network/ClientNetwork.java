@@ -32,7 +32,8 @@ public class ClientNetwork implements Runnable {
 
 	@Override
 	public void run() {
-		
+
+		System.out.println("lel");
 		
 		
 	}
