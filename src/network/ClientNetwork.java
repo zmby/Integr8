@@ -34,7 +34,11 @@ public class ClientNetwork implements Runnable {
 	public void run() {
 
 		System.out.println("lel");
-		
+		System.out.println("lel");
+		System.out.println("lel");
+		System.out.println("lel");
+		System.out.println("lel");
+
 		
 	}
 
