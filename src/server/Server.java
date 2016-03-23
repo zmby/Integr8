@@ -1,12 +1,14 @@
 package server;
 
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 
 
 //Class for starting the server.
 public class Server implements Runnable {
-
+	private List<SConnectionHandler> clientList;
 	private ServerSocket serverSocket;
 	private int serverPort;
 	private boolean isActive = false;
@@ -14,6 +16,7 @@ public class Server implements Runnable {
 	
 	public Server(int port) {
 		serverPort = port;
+		clientList = new ArrayList<SConnectionHandler>();
 	}
 	
 	private void openServerSocket(){
