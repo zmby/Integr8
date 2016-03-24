@@ -30,10 +30,30 @@ public class SConnectionHandler implements Runnable{
 			try {
 				Object input = in.readObject();
 				readObject(input);
+				
 			} catch (ClassNotFoundException e) {
 				System.out.println("Clientsent object not found! Check Versions!");
-			} catch (IOException e) {
+				try {
+					clientSocket.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			} 
+			
+				catch (IOException e) {
 				e.printStackTrace();
+				try {
+					clientSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					clientSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 			
