@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 25. Mrz 2016 um 04:21
+-- Erstellungszeit: 25. Mrz 2016 um 04:51
 -- Server Version: 5.6.21
 -- PHP-Version: 5.6.3
 
@@ -23,13 +23,42 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `friend_list`
+--
+
+CREATE TABLE IF NOT EXISTS `friend_list` (
+  `uid` int(11) NOT NULL,
+  `fid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `friend_list`
+--
+
+INSERT INTO `friend_list` (`uid`, `fid`) VALUES
+(4, 3),
+(3, 4);
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `languages`
 --
 
 CREATE TABLE IF NOT EXISTS `languages` (
 `lang_id` int(11) NOT NULL,
   `lang_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `languages`
+--
+
+INSERT INTO `languages` (`lang_id`, `lang_name`) VALUES
+(1, 'german'),
+(2, 'english'),
+(3, 'arabic'),
+(4, 'french');
 
 -- --------------------------------------------------------
 
@@ -48,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `languages_competence` (
 --
 
 INSERT INTO `languages_competence` (`uid`, `language`, `skill`) VALUES
-(1, 'German', 5);
+(3, 'english', 6);
 
 -- --------------------------------------------------------
 
@@ -58,8 +87,16 @@ INSERT INTO `languages_competence` (`uid`, `language`, `skill`) VALUES
 
 CREATE TABLE IF NOT EXISTS `language_target` (
   `uid` int(11) NOT NULL,
-  `target_language` int(11) NOT NULL
+  `target_language` varchar(50) NOT NULL,
+  `skill` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `language_target`
+--
+
+INSERT INTO `language_target` (`uid`, `target_language`, `skill`) VALUES
+(4, 'arabic', 3);
 
 -- --------------------------------------------------------
 
@@ -142,6 +179,12 @@ INSERT INTO `user_types` (`type_id`, `type`) VALUES
 --
 
 --
+-- Indizes für die Tabelle `friend_list`
+--
+ALTER TABLE `friend_list`
+ ADD PRIMARY KEY (`uid`), ADD KEY `fid` (`fid`);
+
+--
 -- Indizes für die Tabelle `languages`
 --
 ALTER TABLE `languages`
@@ -151,13 +194,13 @@ ALTER TABLE `languages`
 -- Indizes für die Tabelle `languages_competence`
 --
 ALTER TABLE `languages_competence`
- ADD PRIMARY KEY (`uid`), ADD UNIQUE KEY `skill` (`skill`);
+ ADD PRIMARY KEY (`uid`), ADD UNIQUE KEY `skill` (`skill`), ADD UNIQUE KEY `language` (`language`);
 
 --
 -- Indizes für die Tabelle `language_target`
 --
 ALTER TABLE `language_target`
- ADD PRIMARY KEY (`uid`);
+ ADD PRIMARY KEY (`uid`), ADD UNIQUE KEY `target_language` (`target_language`,`skill`), ADD UNIQUE KEY `skill` (`skill`);
 
 --
 -- Indizes für die Tabelle `skill_levels`
@@ -185,7 +228,7 @@ ALTER TABLE `user_types`
 -- AUTO_INCREMENT für Tabelle `languages`
 --
 ALTER TABLE `languages`
-MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT für Tabelle `skill_levels`
 --
@@ -206,10 +249,27 @@ MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 
 --
+-- Constraints der Tabelle `friend_list`
+--
+ALTER TABLE `friend_list`
+ADD CONSTRAINT `friend_list_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`uid`),
+ADD CONSTRAINT `friend_list_ibfk_2` FOREIGN KEY (`fid`) REFERENCES `users` (`uid`);
+
+--
 -- Constraints der Tabelle `languages_competence`
 --
 ALTER TABLE `languages_competence`
-ADD CONSTRAINT `languages_competence_ibfk_1` FOREIGN KEY (`skill`) REFERENCES `skill_levels` (`skill_level`);
+ADD CONSTRAINT `languages_competence_ibfk_1` FOREIGN KEY (`skill`) REFERENCES `skill_levels` (`skill_level`),
+ADD CONSTRAINT `languages_competence_ibfk_2` FOREIGN KEY (`language`) REFERENCES `languages` (`lang_name`),
+ADD CONSTRAINT `languages_competence_ibfk_3` FOREIGN KEY (`uid`) REFERENCES `users` (`uid`);
+
+--
+-- Constraints der Tabelle `language_target`
+--
+ALTER TABLE `language_target`
+ADD CONSTRAINT `language_target_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`uid`),
+ADD CONSTRAINT `language_target_ibfk_2` FOREIGN KEY (`skill`) REFERENCES `skill_levels` (`skill_level`),
+ADD CONSTRAINT `language_target_ibfk_3` FOREIGN KEY (`target_language`) REFERENCES `languages` (`lang_name`);
 
 --
 -- Constraints der Tabelle `users`
